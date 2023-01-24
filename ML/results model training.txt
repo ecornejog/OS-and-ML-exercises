@@ -1,0 +1,34 @@
+Predictions (DSP: 322 ms., Classification: 4 ms., Anomaly: 0 ms.):
+    mamaweo:    0.000000
+    noise:      0.996094
+    unknown:    0.003906
+Starting inferencing in 2 seconds...
+Predictions (DSP: 322 ms., Classification: 4 ms., Anomaly: 0 ms.):
+    mamaweo:    0.996094
+    noise:      0.000000
+    unknown:    0.000000
+Starting inferencing in 2 seconds...
+Predictions (DSP: 322 ms., Classification: 4 ms., Anomaly: 0 ms.):
+    mamaweo:    0.996094
+    noise:      0.000000
+    unknown:    0.000000
+Starting inferencing in 2 seconds...
+Predictions (DSP: 322 ms., Classification: 4 ms., Anomaly: 0 ms.):
+    mamaweo:    0.000000
+    noise:      0.035156
+    unknown:    0.964844
+Starting inferencing in 2 seconds...
+Predictions (DSP: 322 ms., Classification: 4 ms., Anomaly: 0 ms.):
+    mamaweo:    0.000000
+    noise:      0.015625
+    unknown:    0.984375
+Starting inferencing in 2 seconds...
+Predictions (DSP: 322 ms., Classification: 4 ms., Anomaly: 0 ms.):
+    mamaweo:    0.000000
+    noise:      0.105469
+    unknown:    0.894531
+Starting inferencing in 2 seconds...
+Predictions (DSP: 322 ms., Classification: 4 ms., Anomaly: 0 ms.):
+    mamaweo:    0.996094
+    noise:      0.000000
+    unknown:    0.000000

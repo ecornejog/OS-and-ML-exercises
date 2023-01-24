@@ -1,0 +1,134 @@
+Question 1: each task displays a trace message. How does it happen that the contents of the messages are not mixed, from time to time?
+
+because its has a vTaskDelay who assure that there is not collision between task 
+
+
+Question 2: remove the call to vTaskDelay function in app_main. Build, run, check trace messages. What happens? How do you explain this?
+
+display the message of each task as fast as he can, because there is not delay for each task and they try to execute when they have the resource
+ant time to time they raise and error
+
+I (15318) TSK: Hello from task2
+I (15328) TSK: Hello fromE (15328) task_wdt: Task watchdog got triggered. The following tasks did not reset the watchdog in time:
+E (15328) task_wdt:  - IDLE (CPU 0)
+E (15328) task_wdt: Tasks currently running:
+E (15328) task_wdt: CPU 0: task2
+E (15328) task_wdt: CPU 1: IDLE
+E (15328) task_wdt: Print CPU 0 (current core) backtrace
+
+
+Backtrace: 0x400D6593:0x3FFB0B90 0x40082799:0x3FFB0BB0 0x400D2EE7:0x3FFBB380 0x400D3675:0x3FFBB3B0 0x400D259B:0x3FFBB3D0 0x400D214F:0x3FFBB3F0 0x4000BD83:0x3FFBB410 0x4000117D:0x3FFBB430 0x400592FE:0x3FFBB450 0Backtrace: 0x400D6593:0x3FFB0B90 0x40082799:0x3FFB0BB0 0x400D2EE7:0x3FFBB380 0x400D3675:0x3FFBB3B0 0x400D259B:0x3FFBB3D0 0x400D214F:0x3FFBB3F0 0x4000BD83:0x3FFBB410 0x4000117D:0x3FFBB430 0x400592FE:0x3FFBB450 0x4005937A:0x3FFBB470 0x40058BBF:0x3FFBB490 0x400E1D9B:0x3FFBB4C0 0x400DDA07:0x3FFBB4E0 0x400DDB75:0x3FFBB7F0 0x400E4975:0x3FFBB820 0x4008A091:0x3FFBB850 0x400D4B09:0x3FFBB8A0 0x40087CB1:0x3FFBB8C0
+0x400d6593: task_wdt_isr at C:/Users/emili/esp-idf/esp-idf-v4.4.3/components/esp_system/task_wdt.c:183 (discriminator 3)
+
+.0x40082799: _xt_lowint1 at C:/Users/emili/esp-idf/esp-idf-v4.4.3/components/freertos/port/xtensa/xtensa_vectors.S:1111
+
+0x400d2ee7: uart_ll_get_txfifo_len at C:/Users/emili/esp-idf/esp-idf-v4.4.3/components/hal/esp32/include/hal/uart_ll.h:319 (discriminator 1)
+ (inlined by) uart_tx_char at C:/Users/emili/esp-idf/esp-idf-v4.4.3/components/vfs/vfs_uart.c:156 (discriminator 1)
+
+0x400d3675: uart_write at C:/Users/emili/esp-idf/esp-idf-v4.4.3/components/vfs/vfs_uart.c:209
+
+0x400d259b: console_write at C:/Users/emili/esp-idf/esp-idf-v4.4.3/components/vfs/vfs_console.c:73
+
+0x400d214f: esp_vfs_write at C:/Users/emili/esp-idf/esp-idf-v4.4.3/components/vfs/vfs.c:431 (discriminator 4)
+
+0x400e1d9b: __sprint_r at /builds/idf/crosstool-NG/.build/HOST-x86_64-w64-mingw32/xtensa-esp32-elf/src/newlib/newlib/libc/stdio/vfprintf.c:433
+ (inlined by) __sprint_r at /builds/idf/crosstool-NG/.build/HOST-x86_64-w64-mingw32/xtensa-esp32-elf/src/newlib/newlib/libc/stdio/vfprintf.c:403
+
+0x400dda07: _vfprintf_r at /builds/idf/crosstool-NG/.build/HOST-x86_64-w64-mingw32/xtensa-esp32-elf/src/newlib/newlib/libc/stdio/vfprintf.c:1781 (discriminator 1)
+
+0x400ddb75: vprintf at /builds/idf/crosstool-NG/.build/HOST-x86_64-w64-mingw32/xtensa-esp32-elf/src/newlib/newlib/libc/stdio/vprintf.c:34 (discriminator 5)
+
+0x400e4975: esp_log_writev at C:/Users/emili/esp-idf/esp-idf-v4.4.3/components/log/log.c:200
+
+0x4008a091: esp_log_write at C:/Users/emili/esp-idf/esp-idf-v4.4.3/components/log/log.c:210
+
+0x400d4b09: task2 at C:/Users/emili/eclipse-workspace/test_exercises/main/main.c:46
+
+0x40087cb1: vPortTaskWrapper at C:/Users/emili/esp-idf/esp-idf-v4.4.3/components/freertos/port/xtensa/port.c:131
+
+E (15328) task_wdt: Print CPU 1 backtrace
+
+
+Bac.ktrace: 0x400841AD:0x3FFB1190 0x40082799:0x3FFB11B0 0x4000BFED:0x3FFB6720 0x40087F62:0x3FFB6730 0x400D67F0:0x3FFB6750 0x400D67FB:0x3FFB6780 0x400D1835:0x3FFB67A0 0x40086602:0x3FFB67C0 0x40087CB1:0x3FFB67E0
+0x400841ad: esp_crosscore_isr at C:/Users/emili/esp-idf/esp-idf-v4.4.3/components/esp_system/crosscore_int.c:92
+
+0x40082799: _xt_lowint1 at C:/Users/emili/esp-idf/esp-idf-v4.4.3/components/freertos/port/xtensa/xtensa_vectors.S:1111
+
+0x40087f62: vPortClearInterruptMaskFromISR at C:/Users/emili/esp-idf/esp-idf-v4.4.3/components/freertos/port/xtensa/include/freertos/portmacro.h:571
+ (inlined by) vPortExitCritical at C:/Users/emili/esp-idf/esp-idf-v4.4.3/components/freertos/port/xtensa/port.c:319
+
+0x400d67f0: esp_task_wdt_reset at C:/Users/emili/esp-idf/esp-idf-v4.4.3/components/esp_system/task_wdt.c:330
+
+0x400d67fb: idle_hook_cb at C:/Users/emili/esp-idf/esp-idf-v4.4.3/components/esp_system/task_wdt.c:80
+
+0x400d1835: esp_vApplicationIdleHook at C:/Users/emili/esp-idf/esp-idf-v4.4.3/components/esp_system/freertos_hooks.c:51 (discriminator 1)
+
+0x40086602: prvIdleTask at C:/Users/emili/esp-idf/esp-idf-v4.4.3/components/freertos/tasks.c:3987 (discriminator 1)
+
+0x40087cb1: vPortTaskWrapper at C:/Users/emili/esp-idf/esp-idf-v4.4.3/components/freertos/port/xtensa/port.c:131
+
+
+I (16418) TSK: Hello from task2
+I (16418) TSK: Hello from task2
+I (16428) TSK: Hello from task2
+I (16428) TSK: Hello from task2
+I (16438) TSK: Hello from task2
+I (16438) TSK: Hello from task2
+I (16438) TSK: Hello from task1
+I (16448) TSK: Hello from task2
+I (16448) TSK: Hello from task2
+I (16448) TSK: Hello from task2
+I (16458) TSK: Hello from task2
+I (16458) TSK: Hello from task2
+I (16468) TSK: Hello from task2
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+I (5708) TSK: Hello from task2
+I (5708) TSK: Hello from task1
+r (5718) TSK: Hello from tasCkl1ea
+roI (5mmErro71r8 )f aTiSK:le Hde l(lPoe rmfirsosm itoansEkr1ro
+(13, 'IA c(c5e7s1o8)  dTeSnKe:g Haedlol.o' ,f rNoomn et,a s5k)2)
+
+WaitiIn g( 5f7o2r8 )t hTeS Kd:e vHieclel ot of rroemc otnansekc2t
+I (5728) TSK: Hello from task1
+I (5728) TSK: Hello from task1
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+Question 3: reduce task stack size to 100. Build, run, check trace messages. What happens?
+
+it does not run because it send some errors concerning the size of the task
+W (339) spi_flash: Detected size(4096k) larger than the size in the binary image header(2048k). Using the size in the binary image header.
+I (353) cpu_start: Starting scheduler on PRO CPU.
+I (0) cpu_start: Starting scheduler on APP CPU.
+
+ï¿½@iï¿½?â•štask2 has been detected.
+
+
+Backtrace: 0x40081892:0x3ffb68b0 0x4008525d:0x3ffb68d0 0x40087f76:0x3ffb68f0 0x40086be6:0x3ffb6970 0x40085358:0x3ffb6990 0x4008530a:0x3ffb69b0
+0x40081892: panic_abort at C:/Users/emili/esp-idf/esp-idf-v4.4.3/components/esp_system/panic.c:402
+
+0x4008525d: esp_system_abort at C:/Users/emili/esp-idf/esp-idf-v4.4.3/components/esp_system/esp_system.c:128
+
+0x40087f76: vApplicationStackOverflowHook at C:/Users/emili/esp-idf/esp-idf-v4.4.3/components/freertos/port/xtensa/port.c:394
+
+.0x40086be6: vTaskSwitchContext at C:/Users/emili/esp-idf/esp-idf-v4.4.3/components/freertos/tasks.c:3504
+
+0x40085358: _frxt_dispatch at C:/Users/emili/esp-idf/esp-idf-v4.4.3/components/freertos/port/xtensa/portasm.S:436
+
+0x4008530a: _frxt_int_exit at C:/Users/emili/esp-idf/esp-idf-v4.4.3/components/freertos/port/xtensa/portasm.S:231
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Question 4: read the description of the uxTaskGetStackHighWaterMark function. Then, use the function to find a minimal value for task1 stack depth, and test it.
+
+it told us the value of the unused "memory"
+
+the limit is stack depth - highwatermark
+#define TASK1_STACK_DEPTH 1700 (in reality 1680)
+#define TASK2_STACK_DEPTH 1680 (in reality 1664)
